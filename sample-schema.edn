@@ -2,16 +2,16 @@
 {:tables
  ;; In PostgreSQL you can't have a table named "user" unless you quote
  ;; it. So we quote "user" everywhere instead of saying :user.
- {"\"user\"" [[:user_id :bigserial]
-              [:username "VARCHAR(255)" "NOT NULL"]
-              [:email :text "NOT NULL"]
-              [:timecreated :timestamp "DEFAULT CURRENT_TIMESTAMP"]]
-  :shoe [[:shoe_id :bigserial]
-         [:style :text]
-         [:size :text "NOT NULL"]
-         [:leftright :text]]}
- :indices {:user_id_ux ["\"user\"" [:user_id] :unique]
-           :user_username_ux ["\"user\"" [:username] :unique]
-           :user_email_ix ["\"user\"" [:email]]
-           :shoe_id_ux [:shoe [:shoe_id] :unique]
-           :shoe_stylelr_ix [:shoe [:style :leftright]]}}
+ {"\"user\"" {:cols [[:user_id :bigserial]
+                     [:username "VARCHAR(255)" "NOT NULL"]
+                     [:email :text "NOT NULL"]
+                     [:timecreated :timestamp "DEFAULT CURRENT_TIMESTAMP"]]
+              :indices {:user_id_ux ["\"user\"" [:user_id] :unique]
+                        :user_username_ux ["\"user\"" [:username] :unique]
+                        :user_email_ix ["\"user\"" [:email]]}}
+  :shoe {:cols [[:shoe_id :bigserial]
+                [:style :text]
+                [:size :text "NOT NULL"]
+                [:leftright :text]]
+         :indices {:shoe_id_ux [:shoe [:shoe_id] :unique]
+                   :shoe_stylelr_ix [:shoe [:style :leftright]]}}}}
