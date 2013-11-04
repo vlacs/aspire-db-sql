@@ -39,15 +39,6 @@
   (let [tables (get-tables db)]
     (set/difference (into #{} (keys schema-tables)) tables)))
 
-(defn ensure-tables!
-  "Ensure that all the tables in application schema exist in the local DB"
-  [db schema]
-  (let [schema-tables (:tables schema)
-        missing-tables (missing-tables db schema-tables)]
-    (doall (for [t missing-tables]
-             (and (apply create! db ddl/create-table t (schema-tables t))
-                  t)))))
-
 (defn create-indices!
   "Create the specified indices."
   [db schema]
@@ -55,11 +46,19 @@
     (doall (for [key (keys schema-indices)]
              (apply create! db ddl/create-index key (schema-indices key))))))
 
+(defn ensure-tables!
+  "Ensure that all the tables in application schema exist in the local DB"
+  [db schema]
+  (let [schema-tables (:tables schema)
+        missing-tables (missing-tables db schema-tables)]
+    (doall (for [t missing-tables]
+             (and (apply create! db ddl/create-table t ((schema-tables t) :cols))
+                  (create-indices! db (schema-tables t)))))))
+
 (defn init!
   "Ensure that all necessary tables and all indices from schema exist in the specified DB."
   [db schema]
   (ensure-tables! db schema)
-  (create-indices! db schema)
   nil)
 
 (comment
