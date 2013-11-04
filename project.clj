@@ -1,4 +1,4 @@
-(defproject jdbc-pg-init "0.1.0"
+(defproject jdbc-pg-init "0.1.1-SNAPSHOT"
   :description "A library to create PostgreSQL tables and indices from edn data."
   :url "https://github.com/vlacs/jdbc-pg-init"
   :license {:name "Eclipse Public License"
