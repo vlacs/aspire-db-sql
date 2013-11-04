@@ -1,4 +1,14 @@
-aspire-db-sql
-=============
+# jdbc-pg-init
 
-SQL DB library for Aspire -- the first version will use Postgres. A future version will move to Datomic.
+This is a Clojure library to create PostgreSQL tables and indices from edn data.
+
+## Usage
+
+FIXME
+
+## License
+
+Copyright © 2013 FIXME
+
+Distributed under the Eclipse Public License either version 1.0 or (at
+your option) any later version.
