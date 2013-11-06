@@ -4,7 +4,7 @@
  {"\"user\"" {:cols [[:user_id :bigserial]
                      [:username "VARCHAR(255)" "NOT NULL"]
                      [:email :text "NOT NULL"]
-                     [:timecreated :timestamp "DEFAULT CURRENT_TIMESTAMP"]]
+                     [:timecreated "TIMESTAMP WITH TIME ZONE" "DEFAULT CURRENT_TIMESTAMP"]]
               :primary-key [:user_id]
               :indices {:user_username_ux [[:username] :unique]
                         :user_email_ix [[:email]]}}
