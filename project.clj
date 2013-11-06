@@ -4,7 +4,11 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.5.1"]
-                 [org.clojure/java.jdbc "0.3.0-beta1"]]
+                 ;; Patch sent to upstream: http://dev.clojure.org/jira/browse/JDBC-73
+                 ;; Until patch is accepted, this can be grabbed from
+                 ;; https://github.com/moquist/java.jdbc and installed locally
+                 [org.clojure/java.jdbc "0.3.0-SNAPSHOT4"]]
   :profiles
   {:dev
-   {:dependencies [[postgresql/postgresql "8.4-702.jdbc4"]]}})
+   {:dependencies [[postgresql/postgresql "8.4-702.jdbc4"]
+                   [mysql/mysql-connector-java "5.1.26"]]}})
