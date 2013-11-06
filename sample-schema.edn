@@ -16,4 +16,5 @@
          :primary-key [:shoe_id]
          :foreign-keys {:shoe_user_id_fk [:whoseami "\"user\"" :user_id]}
          :indices {:shoe_id_ux [[:shoe_id] :unique]
-                   :shoe_stylelr_ix [[:style :leftright]]}}}}
+                   :shoe_stylelr_ix [[:style :leftright]]}}
+  :hat {:cols [[:hat_id :bigserial]]}}}
