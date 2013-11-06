@@ -61,10 +61,17 @@
         missing-tables (missing-tables db schema-tables)
         fk-fns (atom [])]
     (doall (for [t missing-tables]
-             (and (apply create! db ddl/create-table t ((schema-tables t) :cols))
-                  (create! db ddl/create-primary-key t ((schema-tables t) :primary-key))
-                  (swap! fk-fns conj (delay (create-foreign-keys! db t ((schema-tables t) :foreign-keys))))
-                  (create-indices! db t ((schema-tables t) :indices)))))
+             (let [schema (schema-tables t)
+                   cols (schema :cols)
+                   pk (schema :primary-key)
+                   fks (schema :foreign-keys)
+                   indices (schema :indices)]
+               (and (apply create! db ddl/create-table t cols)
+                    (if pk (create! db ddl/create-primary-key t pk))
+                    (swap! fk-fns conj (delay (create-foreign-keys! db t fks)))
+                    (create-indices! db t indices)))))
+    ;; The tables might be created out of order, so delay all foreign
+    ;; keys until last.
     (doall (map #(deref %) @fk-fns))))
 
 (defn init!
