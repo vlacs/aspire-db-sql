@@ -12,12 +12,10 @@
             [clojure.java.jdbc.sql :as sql]
             [clojure.set :as set]))
 
-;;; see http://dev.clojure.org/jira/browse/JDBC-53
-;;; Deprecate this and use the new jdbc function(s) when they're released.
 (defn create!
-  [db ddl-fn name & specs]
+  [db ddl-fn & specs]
   (try
-    (jdbc/db-do-commands db true (apply ddl-fn name specs))
+    (jdbc/db-do-commands db true (apply ddl-fn specs))
     (catch Exception e
       (.printStackTrace (.getCause e)))))
 
