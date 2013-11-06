@@ -8,9 +8,9 @@ This is a Clojure library to create PostgreSQL tables and indices from edn data.
 2. cd jdbc-pg-init
 3. lein install
 4. Add the following to your [Leiningen](https://github.com/technomancy/leiningen) dependencies:
-   ```clojure
-   jdbc-pg-init "0.1.1-SNAPSHOT"
-   ```
+```clojure
+[jdbc-pg-init "0.1.1-SNAPSHOT"]
+```
 
 ## License
 
