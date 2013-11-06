@@ -1,4 +1,3 @@
-;; TODO: Add FKs
 {:tables
  ;; In PostgreSQL you can't have a table named "user" unless you quote
  ;; it. So we quote "user" everywhere instead of saying :user.
@@ -6,12 +5,15 @@
                      [:username "VARCHAR(255)" "NOT NULL"]
                      [:email :text "NOT NULL"]
                      [:timecreated :timestamp "DEFAULT CURRENT_TIMESTAMP"]]
-              :indices {:user_id_ux ["\"user\"" [:user_id] :unique]
-                        :user_username_ux ["\"user\"" [:username] :unique]
-                        :user_email_ix ["\"user\"" [:email]]}}
+              :primary-key [:user_id]
+              :indices {:user_username_ux [[:username] :unique]
+                        :user_email_ix [[:email]]}}
   :shoe {:cols [[:shoe_id :bigserial]
+                [:whoseami :bigint]
                 [:style :text]
                 [:size :text "NOT NULL"]
                 [:leftright :text]]
-         :indices {:shoe_id_ux [:shoe [:shoe_id] :unique]
-                   :shoe_stylelr_ix [:shoe [:style :leftright]]}}}}
+         :primary-key [:shoe_id]
+         :foreign-keys {:shoe_user_id_fk [:whoseami "\"user\"" :user_id]}
+         :indices {:shoe_id_ux [[:shoe_id] :unique]
+                   :shoe_stylelr_ix [[:style :leftright]]}}}}
