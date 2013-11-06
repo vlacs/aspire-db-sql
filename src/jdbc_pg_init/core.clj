@@ -39,19 +39,33 @@
 
 (defn create-indices!
   "Create the specified indices."
-  [db schema]
-  (let [schema-indices (:indices schema)]
-    (doall (for [key (keys schema-indices)]
-             (apply create! db ddl/create-index key (schema-indices key))))))
+  [db table-name indices]
+  (doall (for [index-name (keys indices)]
+           (apply create!
+                  db
+                  ddl/create-index
+                  index-name
+                  table-name
+                  (indices index-name)))))
+
+(defn create-foreign-keys!
+  "Create the specified FKs."
+  [db table-name fks]
+  (doall (for [fk (keys fks)]
+           (apply create! db ddl/create-foreign-key fk table-name (fks fk)))))
 
 (defn ensure-tables!
   "Ensure that all the tables in application schema exist in the local DB"
   [db schema]
   (let [schema-tables (:tables schema)
-        missing-tables (missing-tables db schema-tables)]
+        missing-tables (missing-tables db schema-tables)
+        fk-fns (atom [])]
     (doall (for [t missing-tables]
              (and (apply create! db ddl/create-table t ((schema-tables t) :cols))
-                  (create-indices! db (schema-tables t)))))))
+                  (create! db ddl/create-primary-key t ((schema-tables t) :primary-key))
+                  (swap! fk-fns conj (delay (create-foreign-keys! db t ((schema-tables t) :foreign-keys))))
+                  (create-indices! db t ((schema-tables t) :indices)))))
+    (doall (map #(deref %) @fk-fns))))
 
 (defn init!
   "Ensure that all necessary tables and all indices from schema exist in the specified DB."
