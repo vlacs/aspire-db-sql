@@ -54,7 +54,7 @@
   (doall (for [fk (keys fks)]
            (apply create! db ddl/create-foreign-key fk table-name (fks fk)))))
 
-(defn ensure-tables!
+(defn init!
   "Ensure that all the tables in application schema exist in the local DB"
   [db schema]
   (let [schema-tables (:tables schema)
@@ -66,18 +66,13 @@
                    pk (schema :primary-key)
                    fks (schema :foreign-keys)
                    indices (schema :indices)]
-               (and (apply create! db ddl/create-table t cols)
-                    (if pk (create! db ddl/create-primary-key t pk))
-                    (swap! fk-fns conj (delay (create-foreign-keys! db t fks)))
-                    (create-indices! db t indices)))))
+               (apply create! db ddl/create-table t cols)
+               (if pk (create! db ddl/create-primary-key t pk))
+               (swap! fk-fns conj (delay (create-foreign-keys! db t fks)))
+               (create-indices! db t indices))))
     ;; The tables might be created out of order, so delay all foreign
     ;; keys until last.
-    (doall (map #(deref %) @fk-fns))))
-
-(defn init!
-  "Ensure that all necessary tables and all indices from schema exist in the specified DB."
-  [db schema]
-  (ensure-tables! db schema)
+    (doall (map #(deref %) @fk-fns)))
   nil)
 
 (comment
@@ -88,3 +83,4 @@
   (def db (assoc db :password "some real password" :subname "//real-hostname/real-db"))
   (init! db schema)
   )
+
