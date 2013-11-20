@@ -14,7 +14,7 @@ Contact us if you're interested in contributing to a more general solution.
 3. lein install
 4. Add the following to your [Leiningen](https://github.com/technomancy/leiningen) dependencies:
 ```
-[jdbc-pg-init "0.1.1-SNAPSHOT"]
+[jdbc-pg-init "0.1.1-SNAPSHOT2"]
 ```
 
 ## License
