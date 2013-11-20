@@ -10,7 +10,8 @@
   (:require [clojure.java.jdbc :as jdbc]
             [clojure.java.jdbc.ddl :as ddl]
             [clojure.java.jdbc.sql :as sql]
-            [clojure.set :as set]))
+            [clojure.set :as set]
+            [jdbc-pg-init.ddl :as pg-ddl]))
 
 (defn create!
   [db ddl-fn & specs]
@@ -52,7 +53,7 @@
   "Create the specified FKs."
   [db table-name fks]
   (doall (for [fk (keys fks)]
-           (apply create! db ddl/create-foreign-key fk table-name (fks fk)))))
+           (apply create! db pg-ddl/create-foreign-key fk table-name (fks fk)))))
 
 (defn init!
   "Ensure that all the tables in application schema exist in the local DB"
@@ -67,7 +68,7 @@
                    fks (schema :foreign-keys)
                    indices (schema :indices)]
                (apply create! db ddl/create-table t cols)
-               (if pk (create! db ddl/create-primary-key t pk))
+               (if pk (create! db pg-ddl/create-primary-key t pk))
                (swap! fk-fns conj (delay (create-foreign-keys! db t fks)))
                (create-indices! db t indices))))
     ;; The tables might be created out of order, so delay all foreign
