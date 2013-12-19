@@ -10,10 +10,7 @@ Contact us if you're interested in contributing to a more general solution.
 
 ## Usage
 
-1. git clone https://github.com/vlacs/jdbc-pg-init
-2. cd jdbc-pg-init
-3. lein install
-4. Add the following to your [Leiningen](https://github.com/technomancy/leiningen) dependencies:
+Add the following to your [Leiningen](https://github.com/technomancy/leiningen) dependencies:
 ```
 [jdbc-pg-init "0.1.1-SNAPSHOT2"]
 ```
