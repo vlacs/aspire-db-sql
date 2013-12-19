@@ -56,7 +56,7 @@
            (apply create! db pg-ddl/create-foreign-key fk table-name (fks fk)))))
 
 (defn init!
-  "Ensure that all the tables in application schema exist in the local DB"
+  "Ensure that all the tables, keys, and indices in the schema exist in the DB"
   [db schema]
   (let [schema-tables (:tables schema)
         missing-tables (missing-tables db schema-tables)
