@@ -20,7 +20,7 @@
     (catch Exception e
       (.printStackTrace (.getCause e)))))
 
-(defn get-tables
+(defn get-tables!
   "Get the tables and views that are already defined in the specified db.
    Return the set of table/view names.
    See http://clojure.github.io/java.jdbc/doc/clojure/java/jdbc/UsingDDL.html"
@@ -35,7 +35,7 @@
 (defn missing-tables
   "Get set of tables in application schema that do not exist in the local DB"
   [db schema-tables]
-  (let [tables (get-tables db)]
+  (let [tables (get-tables! db)]
     (set/difference (into #{} (keys schema-tables)) tables)))
 
 (defn create-indices!
