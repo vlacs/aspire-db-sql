@@ -1,6 +1,7 @@
 # jdbc-pg-init
 
-This is a Clojure library to create PostgreSQL tables and indices from edn data.
+This is a Clojure library to create PostgreSQL tables, keys, and indices from
+edn data.
 
 Really, there should be a general DDL solution in Clojure. But we
 needed something immediately, so this is what we made.
